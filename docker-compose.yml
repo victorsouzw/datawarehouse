@@ -1,0 +1,25 @@
+
+
+version: "3.9"
+services:
+  mysql-docker:
+    image: docker.io/mysql:5.7
+    container_name: mysql-docker
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pass
+      - MYSQL_DATABASE=backroom
+    volumes:
+      - ./db_backroom:/var/lib/mysql
+    ports:
+      # HOST:CONTAINER
+      - "3306:3306"
+    
+
+volumes:
+  mysql-docker:
+    external: true
+  etcd_data:
+    driver: local
+
