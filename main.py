@@ -31,8 +31,31 @@ engine_str = (
 engine = sa.create_engine(engine_str)
 conn = engine.connect()
 
+dim_sh4 = df.copy(deep=True)
+dim_sh2 = df.copy(deep=True)
+dim_local = df.copy(deep=True)
+dim_secao = df.copy(deep=True)
+dim_calendario = df.copy(deep=True)
+
+
+
+print(df)
+#print(dim_sh4[['CodigoSH4', 'DescricaoSH4']].drop_duplicates())
+#print(len(dim_sh2[['CodigoSH2', 'DescricaoSH2']].drop_duplicates()))
+#print(dim_local[['UFdoProduto']].drop_duplicates())
+#print(dim_secao[['CodigoSecao', 'DescricaoSecao']].drop_duplicates())
+#print(dim_calendario[['Ano', 'Mes']].drop_duplicates())
+
+#se fizer sentido nao ter duplicatas, retirar os drop_duplicates
 ##load our dato to mysql
-df.to_sql(name='table_name2', schema='backroom', con=conn, if_exists='append', index=False, dtype=columns_types)
+dim_sh4[['CodigoSH4', 'DescricaoSH4']].drop_duplicates().to_sql(name='dim_sh4', schema='backroom', con=conn, if_exists='append', index=False, dtype=columns_types)
+dim_sh2[['CodigoSH2', 'DescricaoSH2']].drop_duplicates().to_sql(name='dim_sh2', schema='backroom', con=conn, if_exists='append', index=False, dtype=columns_types)
+dim_local[['UFdoProduto']].to_sql(name='dim_local', schema='backroom', con=conn, if_exists='append', index=False, dtype=columns_types)
+dim_secao[['CodigoSecao', 'DescricaoSecao']].drop_duplicates().to_sql(name='dim_secao', schema='backroom', con=conn, if_exists='append', index=False, dtype=columns_types)
+dim_calendario[['Ano', 'Mes']].to_sql(name='dim_calendario', schema='backroom', con=conn, if_exists='append', index=False, dtype=columns_types)
+
+fact_exportacoes = df[['Ano', 'Mes', 'CodigoSecao', 'DescricaoSecao', 'CodigoSH2', 'DescricaoSH2', 'CodigoSH4', 'DescricaoSH4', 'UFdoProduto', 'ValorFOBemDolar']]
+fact_exportacoes.to_sql(name='fact_exportacoes', schema='backroom', con=conn, if_exists='append', index=False, dtype=columns_types)
 
 ##define o datatype das colunas
 #type_cols = ['INTEGER', 'INTEGER', 'TEXT', 'TEXT', 'INTEGER', 'TEXT', 'INTEGER', 'TEXT', 'TEXT','BIGINT'] #Put here the columns types
