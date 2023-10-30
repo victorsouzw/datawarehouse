@@ -1,5 +1,5 @@
 CREATE TABLE dim_secao (
-    codigo_secao INTEGER PRIMARY KEY,
+    codigo_secao VARCHAR(255) PRIMARY KEY,
     descricao_secao VARCHAR(255)
 );
 
@@ -31,7 +31,7 @@ CREATE TABLE dim_calendario (
 );
 
 CREATE TABLE fact_importacoes (
-    codigo_secao INTEGER,
+    codigo_secao VARCHAR(255),
     codigo_sh2 INTEGER,
     codigo_sh4 INTEGER,
     data DATETIME,
@@ -47,7 +47,7 @@ CREATE TABLE fact_importacoes (
 );
 
 CREATE TABLE fact_exportacoes (
-    codigo_secao INTEGER,
+    codigo_secao VARCHAR(255),
     codigo_sh2 INTEGER,
     codigo_sh4 INTEGER,
     data DATETIME,
