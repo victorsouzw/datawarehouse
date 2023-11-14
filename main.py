@@ -67,6 +67,8 @@ pais_dict = {v: k for k, v in pais_dict.get('pais').items()}
 for key in pais_dict.keys():
     fact = fact.replace(key, pais_dict.get(key))
 
+fact = fact.rename(columns={'pais': 'id_pais'})
+
 def my_to_sql(dim, table_name):
     for i in range(len(df)):
         try:
