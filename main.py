@@ -1,6 +1,5 @@
 import pandas as pd
 import sqlalchemy as sa
-import uuid as uuid
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.elements import conv
 
@@ -49,13 +48,13 @@ dim_sh2 = df.copy(deep=True)[['codigo_sh2', 'descricao_sh2']].drop_duplicates()
 dim_secao = df.copy(deep=True)[['codigo_secao', 'descricao_secao']].drop_duplicates()
 dim_pais = df.copy(deep=True)[['pais']].drop_duplicates()
 
+fact = df[['codigo_secao','codigo_sh2', 'codigo_sh4', 'ano', 'mes','valor_fob_dolar','quilograma_liquido']]
 
 # Adiciona ID ao dataframe dim_pais
-dim_pais['ID'] = [uuid.uuid4() for x in range(len(dim_pais))]
+dim_pais['ID'] = [x for x in range(len(dim_pais))]
 
 if ("EXP" in csv_path.upper()):
     # Exportacoes
-    print('exppppppppppp')
     pass
 
 else:
@@ -74,6 +73,8 @@ my_to_sql(dim_sh4, "dim_sh4")
 my_to_sql(dim_sh2, "dim_sh2")
 my_to_sql(dim_secao, "dim_secao")
 my_to_sql(dim_pais, "dim_pais")
+
+print('Dados persistidos')
 
 # check whether connection is Successful or not
 if (conn):
