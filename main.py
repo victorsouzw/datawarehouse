@@ -4,7 +4,7 @@ import uuid as uuid
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.elements import conv
 
-##conexão com o bd
+# Conexão com o BD
 engine_str = (
     "mysql+pymysql://{user}:{password}@{server}/{database}".format(
         user="user",
@@ -14,7 +14,7 @@ engine_str = (
 engine = sa.create_engine(engine_str)
 conn = engine.connect()
 
-##Define nome das colunas
+# Define nome das colunas
 column_names = [
     "ano",
     "mes",
@@ -30,16 +30,17 @@ column_names = [
     "valor_fob_dolar",
     "quilograma_liquido"
 ]
+
 csv_path = ""
 print("O arquivo deve estar no mesmo diretório que o arquivo main.py.")
 input_path = input("Digite o nome do arquivo CSV: ")
+
 if not input_path:
-    csv_path = "data.csv"
+    csv_path = "exp_data.csv"
 else:
     csv_path = input_path
-print(csv_path)
 
-##extract
+# Extract
 df = pd.read_csv(csv_path, delimiter=";", names=column_names, low_memory=False, header=None,
                  skiprows=1)
 
@@ -49,34 +50,23 @@ dim_secao = df.copy(deep=True)[['codigo_secao', 'descricao_secao']].drop_duplica
 dim_pais = df.copy(deep=True)[['pais']].drop_duplicates()
 
 
-#Adiciona id ao dataframe dim_pais
+# Adiciona ID ao dataframe dim_pais
 dim_pais['ID'] = [uuid.uuid4() for x in range(len(dim_pais))]
 
+if ("EXP" in csv_path.upper()):
+    # Exportacoes
+    print('exppppppppppp')
+    pass
 
-## o que fazer com o pais? tem q criar um id e depois passar pra fato
-#fact = df[["codigo_secao","codigo_sh2", "codigo_sh4", "data", "ID DO PAIS",
- #          "NOME DA ORIGEM","valor_fob_dolar","quilograma_liquido"]]
+else:
+     # Importacoes
+     pass
 
-##carrega os dados no mysql
-##posteriormente criar um processo para cada dimensao e dividir em chunks e criar threads
-
-#
-# if ("EXP" in csv_path):
-#     # CSV de exportacoes
-#     fact.to_sql(name='fact_exportacoes', schema='test', con=conn,
-#                 if_exists='append', index=False)
-#
-#
-# else:
-#     # CSV de importacoes
-#     fact.to_sql(name='fact_importacoes', schema='test', con=conn,
-#                 if_exists='append', index=False)
 def my_to_sql(dim, table_name):
     for i in range(len(df)):
         try:
             dim[i:i+1].to_sql(name=table_name, schema='test', con=conn, if_exists='append', index=False)
         except IntegrityError:
-            ##necessario para lidar com o caso de inserir um registro com primary key ja existente
             pass
 
 #Persiste os dados em suas respectivas tabelas
