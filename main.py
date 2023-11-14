@@ -1,5 +1,6 @@
 import pandas as pd
 import sqlalchemy as sa
+import uuid as uuid
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.elements import conv
 
