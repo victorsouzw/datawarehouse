@@ -47,7 +47,6 @@ dim_sh2 = df.copy(deep=True)[['codigo_sh2', 'descricao_sh2']].drop_duplicates()
 dim_secao = df.copy(deep=True)[['codigo_secao', 'descricao_secao']].drop_duplicates()
 
 dim_local = df.copy(deep=True).drop_duplicates()
-dim_calendario = df.copy(deep=True)[['ano', 'mes']].drop_duplicates()
 
 ## o que fazer com o pais? tem q criar um id e depois passar pra fato
 #fact = df[["codigo_secao","codigo_sh2", "codigo_sh4", "data", "ID DO PAIS",
@@ -79,10 +78,6 @@ def my_to_sql(dim, table_name):
 my_to_sql(dim_sh4, "dim_sh4")
 my_to_sql(dim_sh2, "dim_sh2")
 my_to_sql(dim_secao, "dim_secao")
-
-##entender a dimensao calendario: no CSV so temos ano e mês, na tabela aparecem diversas outras
-##talvez subir como ano e mes e alterar no BI
-#my_to_sql(dim_calendario, "dim_calendario")
 
 # check whether connection is Successful or not
 if (conn):
