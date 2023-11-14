@@ -48,13 +48,13 @@ dim_sh2 = df.copy(deep=True)[['codigo_sh2', 'descricao_sh2']].drop_duplicates()
 dim_secao = df.copy(deep=True)[['codigo_secao', 'descricao_secao']].drop_duplicates()
 dim_pais = df.copy(deep=True)[['pais']].drop_duplicates()
 
-fact = df[['codigo_secao','codigo_sh2', 'codigo_sh4', 'ano', 'mes','valor_fob_dolar','quilograma_liquido']]
+fact = df[['codigo_secao','codigo_sh2', 'codigo_sh4', 'ano', 'mes','valor_fob_dolar','quilograma_liquido', 'pais']]
 
 # Adiciona ID ao dataframe dim_pais
 dim_pais['id_pais'] = [x for x in range(len(dim_pais))]
 
 # Adiciona ref de pais ao dataframe fact
-fact['id_pais'] = [x for x in range(len(dim_pais))]
+fact['id_pais'] = 0
 
 def my_to_sql(dim, table_name):
     for i in range(len(df)):
