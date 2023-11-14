@@ -34,7 +34,7 @@ csv_path = ""
 print("O arquivo deve estar no mesmo diretório que o arquivo main.py.")
 input_path = input("Digite o nome do arquivo CSV: ")
 if not input_path:
-    csv_path = "EXP_2000_2023_20231027.csv"
+    csv_path = "data.csv"
 else:
     csv_path = input_path
 print(csv_path)
@@ -46,8 +46,12 @@ df = pd.read_csv(csv_path, delimiter=";", names=column_names, low_memory=False, 
 dim_sh4 = df.copy(deep=True)[['codigo_sh4', 'descricao_sh4']].drop_duplicates()
 dim_sh2 = df.copy(deep=True)[['codigo_sh2', 'descricao_sh2']].drop_duplicates()
 dim_secao = df.copy(deep=True)[['codigo_secao', 'descricao_secao']].drop_duplicates()
+dim_pais = df.copy(deep=True)[['pais']].drop_duplicates()
 
-dim_local = df.copy(deep=True).drop_duplicates()
+
+#Adiciona id ao dataframe dim_pais
+dim_pais['ID'] = [uuid.uuid4() for x in range(len(dim_pais))]
+
 
 ## o que fazer com o pais? tem q criar um id e depois passar pra fato
 #fact = df[["codigo_secao","codigo_sh2", "codigo_sh4", "data", "ID DO PAIS",
@@ -79,6 +83,7 @@ def my_to_sql(dim, table_name):
 my_to_sql(dim_sh4, "dim_sh4")
 my_to_sql(dim_sh2, "dim_sh2")
 my_to_sql(dim_secao, "dim_secao")
+my_to_sql(dim_pais, "dim_pais")
 
 # check whether connection is Successful or not
 if (conn):
