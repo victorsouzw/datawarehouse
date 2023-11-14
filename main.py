@@ -51,15 +51,10 @@ dim_pais = df.copy(deep=True)[['pais']].drop_duplicates()
 fact = df[['codigo_secao','codigo_sh2', 'codigo_sh4', 'ano', 'mes','valor_fob_dolar','quilograma_liquido']]
 
 # Adiciona ID ao dataframe dim_pais
-dim_pais['ID'] = [x for x in range(len(dim_pais))]
+dim_pais['id_pais'] = [x for x in range(len(dim_pais))]
 
-if ("EXP" in csv_path.upper()):
-    # Exportacoes
-    pass
-
-else:
-     # Importacoes
-     pass
+# Adiciona ref de pais ao dataframe fact
+fact['id_pais'] = [x for x in range(len(dim_pais))]
 
 def my_to_sql(dim, table_name):
     for i in range(len(df)):
@@ -69,10 +64,18 @@ def my_to_sql(dim, table_name):
             pass
 
 #Persiste os dados em suas respectivas tabelas
+
 my_to_sql(dim_sh4, "dim_sh4")
 my_to_sql(dim_sh2, "dim_sh2")
 my_to_sql(dim_secao, "dim_secao")
 my_to_sql(dim_pais, "dim_pais")
+
+if ("EXP" in csv_path.upper()):
+    # Exportacoes
+    my_to_sql(fact, "fact_exportacoes")
+else:
+     # Importacoes
+     my_to_sql(fact, "fact_importacoes")
 
 print('Dados persistidos')
 
