@@ -13,6 +13,12 @@ engine_str = (
 engine = sa.create_engine(engine_str)
 conn = engine.connect()
 
+# check whether connection is Successful or not
+if (conn):
+    print("MySQL Connection is Successful ... ... ...")
+else:
+    print("MySQL Connection is not Successful ... ... ...")
+
 # Define nome das colunas
 column_names = [
     "ano",
@@ -53,8 +59,13 @@ fact = df[['codigo_secao','codigo_sh2', 'codigo_sh4', 'ano', 'mes','valor_fob_do
 # Adiciona ID ao dataframe dim_pais
 dim_pais['id_pais'] = [x for x in range(len(dim_pais))]
 
+# Criando dicionario indexado por pais
+pais_dict = dim_pais.to_dict()
+pais_dict = {v: k for k, v in pais_dict.get('pais').items()}
+
 # Adiciona ref de pais ao dataframe fact
-fact['id_pais'] = 0
+for key in pais_dict.keys():
+    fact = fact.replace(key, pais_dict.get(key))
 
 def my_to_sql(dim, table_name):
     for i in range(len(df)):
@@ -78,9 +89,3 @@ else:
      my_to_sql(fact, "fact_importacoes")
 
 print('Dados persistidos')
-
-# check whether connection is Successful or not
-if (conn):
-    print("MySQL Connection is Successful ... ... ...")
-else:
-    print("MySQL Connection is not Successful ... ... ...")
