@@ -1,3 +1,7 @@
+DROP DATABASE backroom;
+CREATE DATABASE backroom;
+USE backroom;
+
 CREATE TABLE dim_secao (
     codigo_secao VARCHAR(255) PRIMARY KEY,
     descricao_secao VARCHAR(255)
