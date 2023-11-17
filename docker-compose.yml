@@ -11,7 +11,7 @@ services:
       - MYSQL_PASSWORD=pass
       - MYSQL_DATABASE=backroom
     volumes:
-      - ./db_backroom:/var/lib/mysql
+      - ./db_backroom_final:/var/lib/mysql
     ports:
       # HOST:CONTAINER
       - "3306:3306"

@@ -9,7 +9,7 @@ engine_str = (
         user="user",
         password="pass",
         server="localhost:3306",
-        database="test"))
+        database="backroom"))
 engine = sa.create_engine(engine_str)
 conn = engine.connect()
 
@@ -72,7 +72,7 @@ fact = fact.rename(columns={'pais': 'id_pais'})
 def my_to_sql(dim, table_name):
     for i in range(len(df)):
         try:
-            dim[i:i+1].to_sql(name=table_name, schema='test', con=conn, if_exists='append', index=False)
+            dim[i:i+1].to_sql(name=table_name, schema='backroom', con=conn, if_exists='append', index=False)
         except IntegrityError:
             pass
 
@@ -83,7 +83,7 @@ my_to_sql(dim_sh2, "dim_sh2")
 my_to_sql(dim_secao, "dim_secao")
 my_to_sql(dim_pais, "dim_pais")
 
-if ("EXP" in csv_path.upper()):
+if ("exp" in csv_path.upper()):
     # Exportacoes
     my_to_sql(fact, "fact_exportacoes")
 else:
