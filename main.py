@@ -83,11 +83,12 @@ my_to_sql(dim_sh2, "dim_sh2")
 my_to_sql(dim_secao, "dim_secao")
 my_to_sql(dim_pais, "dim_pais")
 
-if ("exp" in csv_path.upper()):
-    # Exportacoes
-    my_to_sql(fact, "fact_exportacoes")
-else:
-     # Importacoes
-     my_to_sql(fact, "fact_importacoes")
+my_to_sql(fact, "fact_exportacoes")
+# if ("exp" in csv_path.upper()):
+#     # Exportacoes
+#     my_to_sql(fact, "fact_exportacoes")
+# else:
+#      # Importacoes
+#      my_to_sql(fact, "fact_importacoes")
 
 print('Dados persistidos')
